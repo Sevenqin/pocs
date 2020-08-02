@@ -44,8 +44,7 @@ class TestPOC(POCBase):
                 result['VerifyInfo'] = {}
                 result['VerifyInfo']['URL'] = '{}:{}'.format(
                     host, port)
-                result['extra'] = {}
-                result['extra']['evidence'] = data.decode('utf-8')
+                result['extra'] = data.decode('utf-8')
                 return self.parse_attack(result)
             else:
                 logger.info(data)

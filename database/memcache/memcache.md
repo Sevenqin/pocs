@@ -30,8 +30,8 @@ bash:
 
 ### 漏洞修复
 配置memcached监听本地回环地址127.0.0.1
-'''bash
+```bash
 vim /etc/sysconfig/memcached
 OPTIONS="-l 127.0.0.1"  #设置本地为监听
 /etc/init.d/memcached restart #重启服务
-'''
+```

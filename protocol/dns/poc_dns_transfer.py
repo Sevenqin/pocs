@@ -87,7 +87,7 @@ class DNSTransferPOC(POCBase):
             result['VerifyInfo'] = {}
             result['VerifyInfo']['URL'] = self.url
             result['VerifyInfo']['evidence'] = '\n'.join(result)
-            result['VerifyInfo']['evidence'] = '\n'.join(result)
+            result['extra'] = '\n'.join(result)
         return self.parse_output(result)
     def _attack(self):
         return self._verify()

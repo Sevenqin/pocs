@@ -39,8 +39,7 @@ class MemcacheUnauthPOC(POCBase):
             if "STAT version" in info:
                 result['VerifyInfo'] = {}
                 result['VerifyInfo']['URL'] = '{}:{}'.format(host,port)
-                result['extra'] = {}
-                result['extra']['evidence'] = info.strip()
+                result['extra'] = info.strip()
         except Exception as e:
             logger.info('{}:{} fail:{}'.format(host,port,str(e)))
         return self.parse_output(result)
