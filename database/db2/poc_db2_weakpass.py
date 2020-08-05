@@ -9,7 +9,7 @@ import ibm_db
 db2_username = ['db2admin','db2inst1','db2fenc1','dasusr1']
 db2_password = ['123456','db2inst1','db2admin','password','12345','test','guest','12345678']
 def check_alive(host,port):
-    connstr=f"database=TESTDB222;querytimeout=1;connecttimeout=5;hostname={host};port={port};protocol=tcpip;uid=db2inst1211;pwd=123456123123;"
+    connstr=f"database=TESTDB222;querytimeout=6;connecttimeout=6;hostname={host};port={port};protocol=tcpip;uid=db2inst1211;pwd=123456123123;"
     try:
         conn=ibm_db.connect(connstr,"","")
         return True
@@ -22,7 +22,7 @@ def check_alive(host,port):
     return False
 
 def db2_login(host,port,username,password):
-    connstr=f"attach=true;querytimeout=1;connecttimeout=5;HOSTNAME={host};PORT={port};PROTOCOL=TCPIP;UID={username};PWD={password};"
+    connstr=f"attach=true;querytimeout=6;connecttimeout=6;HOSTNAME={host};PORT={port};PROTOCOL=TCPIP;UID={username};PWD={password};"
     conn = None
     try:
         conn=ibm_db.connect(connstr,"","")
