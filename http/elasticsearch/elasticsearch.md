@@ -17,7 +17,6 @@ http://localhost:9200/_nodes 查看节点数据
 poc_elasticsearch_unauth.py
 
 ### 利用方法
-/
 
 ### 修复方法
 1. 限制IP访问，绑定固定IP
