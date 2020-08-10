@@ -31,8 +31,20 @@ Zabbix server可以远程在agent的机器上执行任意命令
 poc_zabbix_sqlinject.py
 
 ### 利用方法
-/
+1. 通过sql注入漏洞获取管理员session或密码登录管理员后台。
+2. 在`http://youhost/zabbix.php?action=script.list&ddreset=1` 页面添加script
+3. 新建反弹shell命令，保存
+4. 首页主页邮件使用该脚本，触发反弹shell
 
 ### 修复方式
 禁用guest账号
 升级zabbix版本
+
+
+## Zabbix Server Active Proxy Trappe RCE漏洞 CVE-2017-2824
+### 漏洞描述
+利用条件比较苛刻，首先需要能访问到Zabbix Server监听的10051端口，另外需要配置Proxy，以及相应的Action来自动添加Host，从而达到利用ip参数进行命令注入
+### 影响范围
+Zabbix 2.4.7 – 2.4.8r1
+### 利用方法
+详见cve-2017-2824

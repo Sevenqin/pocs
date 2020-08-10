@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # author: seven
+# CVE-2016-10134
 from pocsuite3.api import register_poc, POCBase, Output,logger,POC_CATEGORY,requests
 from pocsuite3.lib.core.threads import run_threads
 import re
 
 
 class ZabbixSQLInjectPOC(POCBase):
-    vulID = ''
+    vulID = 'CVE-2016-10134'
     version = '1.0'
     author = ['seven']
     vulDate = 'Aug 9, 2020'
