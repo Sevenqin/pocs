@@ -317,7 +317,7 @@ class Tomcat(object):
 
 
 class TomcatAjpReadPOC(POCBase):
-    vulID = 'CNVD-2020-10487'
+    vulID = 'cve-2020-1938'
     version = '1.0'
     author = ['seven']
     vulDate = 'Jul 20, 2020'
