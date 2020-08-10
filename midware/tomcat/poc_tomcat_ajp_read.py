@@ -323,10 +323,10 @@ class TomcatAjpReadPOC(POCBase):
     vulDate = 'Jul 20, 2020'
     createDate = 'Jul 20, 2020'
     name = 'tomcat ajp任意文件读取'
-    appName = ''
+    appName = 'tomcat'
     appVersion = 'v1.0.0'
-    vulType = ''
-    protocol = ''
+    vulType = '任意文件读取'
+    protocol = 'http'
 
     def parse_output(self, result):
         output = Output(self)

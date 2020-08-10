@@ -147,3 +147,21 @@ forwardrequest 2 "HTTP/1.1" "/123.jsp" 192.168.223.1 192.168.223.1 porto 8009 fa
 
 （3）保存后需重新启动Tomcat，规则方可生效。
 
+## 远程代码执行漏洞 CVE-2019-0232
+### 漏洞说明
+Apache Tomcat是美国阿帕奇（Apache）软件基金会的一款轻量级Web应用服务器。该程序实现了对Servlet和JavaServer Page（JSP）的支持。
+4月11日，Apache官方发布通告称将在最新版本中修复一个远程代码执行漏洞（CVE-2019-0232），由于JRE将命令行参数传递给Windows的方式存在错误，会导致CGI Servlet受到远程执行代码的攻击。
+触发该漏洞需要同时满足以下条件：
+1. 系统为Windows
+2. 启用了CGI Servlet（默认为关闭）
+3. 启用了enableCmdLineArguments（Tomcat 9.0.*及官方未来发布版本默认为关闭）
+
+### 影响范围
+Apache Tomcat 9.0.0.M1 to 9.0.17
+Apache Tomcat 8.5.0 to 8.5.39
+Apache Tomcat 7.0.0 to 7.0.93
+
+### 验证方法
+http://localhost:8080/cgi-bin/hello.bat?&C%3A%5CWindows%5CSystem32%5Cnet.exe+user
+
+该漏洞触发条件较为复杂，不做讨论
