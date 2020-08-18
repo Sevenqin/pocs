@@ -67,7 +67,6 @@ def url_check(url):
 def tomcat_login(url,username,password):
     try:
         res = requests.get(url+'/manager/html',auth=HTTPBasicAuth(username,password))
-        if username=='tomcat' and password =='tomcat':
         if res.status_code == 200:
             return True
     except Exception as e:

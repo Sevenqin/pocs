@@ -71,15 +71,16 @@ def get_word_list():
 
 
 def port_check(host, port=21):
-    if port not in [21,2121,121,1121]:
-        return False
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    connect = s.connect_ex((host, int(port)))
-    if connect == 0:
-        return True
-    else:
+    try:
+        connect = s.connect_ex((host, int(port)))
+        if connect == 0:
+            return True
+    except:
+        pass
+    finally:
         s.close()
-        return False
+    return False
 
 
 def anonymous_login(host, port):
