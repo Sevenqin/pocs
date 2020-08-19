@@ -81,12 +81,10 @@ def check_anonymous(host,port,path,timeout=20):
         sock.send(payload.encode())
         result = sock.recv(1024).decode('utf-8')
         if result == '\n':
-            logger.info(3333)
             result = sock.recv(1024)
         if result.startswith('@RSYNCD: OK'):
             return True
     except Exception as e:
-        logger.info('22222222222')
         logger.info(str(e))
         pass
     finally:
@@ -194,7 +192,7 @@ def rsync_burst(host,port):
     logger.info('BEGIN BURST')
     try:
         task_init(host,port,pathes)
-        run_threads(20,task_thread)
+        run_threads(5,task_thread)
     except Exception as e:
         logger.info(str(e))
         pass
