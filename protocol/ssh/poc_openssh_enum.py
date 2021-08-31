@@ -77,8 +77,10 @@ def checkUsername(host,port,username, tried=0):
 # function to test target system using the randomly generated usernames
 def checkVulnerable(host,port):
     vulnerable = True
+    random_username_list.append('root')
     for user in random_username_list:
         result = checkUsername(host,port,user)
+        print(result)
         if result[1]:
             vulnerable = False
     return vulnerable

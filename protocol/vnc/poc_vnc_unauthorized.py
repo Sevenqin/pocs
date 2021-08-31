@@ -201,8 +201,8 @@ class VNC:
 
 
         print('Challenge: {0}'.format(resp))
-        print(password.ljust(8, '0'))
-        pw = password.ljust(8, '0')[:8] # make sure it is 8 chars long, zero padded
+        print(password.ljust(8, b'0'))
+        pw = password.ljust(8, b'0')[:8] # make sure it is 8 chars long, zero padded
         key = self.gen_key(pw)
 
     

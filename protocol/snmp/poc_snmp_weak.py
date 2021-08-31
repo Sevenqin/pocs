@@ -10,7 +10,8 @@ from pysnmp.hlapi import *
 task_queue = queue.Queue()
 result_queue = queue.Queue()
 
-snmp_weak_dict = ["public", "private", "0", "1234", "Admin", "CISCO", "CR52401", "IBM", "ILMI", "Intermec", "PRIVATE", "PUBLIC", "Private", "Public", "SECRET", "SECURITY", "SNMP", "SWITCH", "SYSTEM", "Secret", "Security", "Switch", "System", "TEST", "access", "adm", "admin", "agent", "cisco", "community", "default", "guest", "hello", "hp_admin", "ibm", "ilmi", "intermec", "internal", "l2", "l3", "manager", "mngt", "monitor", "netman", "network", "none", "openview", "pass", "password", "pr1v4t3", "proxy", "publ1c", "read", "read-only", "read-write", "readwrite", "red", "regional", "rmon", "rmon_admin", "ro", "root", "router", "rw", "rwa", "san-fran", "sanfran", "scotty", "secret", "security", "seri", "snmp", "snmpd", "snmptrap", "solaris", "sun", "superuser", "switch", "system", "tech", "test", "test2", "trap", "world", "write", "yellow"]
+snmp_weak_dict = ["public", "private", "0","test", "1234", "Admin", "CISCO", "CR52401", "IBM", "ILMI", "Intermec", "PRIVATE", "PUBLIC", "Private", "Public", "SECRET", "SECURITY", "SNMP", "SWITCH", "SYSTEM", "Secret", "Security", "Switch", "System", "TEST", "access", "adm", "admin", "agent", "cisco", "community", "default", "guest", "hello", "hp_admin", "ibm", "ilmi", "intermec", "internal", "l2", "l3", "manager", "mngt", "monitor", "netman", "network", "none", "openview", "pass", "password", "pr1v4t3", "proxy", "publ1c", "read", "read-only", "read-write", "readwrite", "red", "regional", "rmon", "rmon_admin", "ro", "root", "router", "rw", "rwa", "san-fran", "sanfran", "scotty", "secret", "security", "seri", "snmp", "snmpd", "snmptrap", "solaris", "sun", "superuser", "switch", "system", "tech", "test", "test2", "trap", "world", "write", "yellow"]
+# snmp_weak_dict = ["public", "private"]
 
 
 class SNMPWeakPOC(POCBase):
@@ -56,13 +57,14 @@ class SNMPWeakPOC(POCBase):
 
 def task_init(host, port):
     for community in snmp_weak_dict:
-        task_queue.put((host, port, community.strip()))
+        for i in range(1):
+            task_queue.put((host, port, community.strip(),i))
 
 
 def task_thread():
     while not task_queue.empty():
-        host, port, community = task_queue.get()
-        res, evi = snmp_login(host, port, community)
+        host, port, community,protocal = task_queue.get()
+        res, evi = snmp_login(host, port, community,protocal)
         if res:
             with task_queue.mutex:
                 task_queue.queue.clear()
@@ -83,13 +85,13 @@ def port_check(host, port):
     return True
 
 
-def snmp_login(host, port, community):
+def snmp_login(host, port, community,protocal=0):
     try:
         logger.info('try burst:{}:{}\t{}'.format(host,str(port),community))
         errorIndication, errorStatus, errorIndex, varBinds = next(
             getCmd(SnmpEngine(),
                    # mpModel -> 0:v1,1:v2c
-                   CommunityData(community, mpModel=1),
+                   CommunityData(community, mpModel=protocal),
                    UdpTransportTarget((host, int(port)),
                                       timeout=1, retries=1),
                    ContextData(),

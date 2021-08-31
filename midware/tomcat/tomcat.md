@@ -165,3 +165,26 @@ Apache Tomcat 7.0.0 to 7.0.93
 http://localhost:8080/cgi-bin/hello.bat?&C%3A%5CWindows%5CSystem32%5Cnet.exe+user
 
 该漏洞触发条件较为复杂，不做讨论
+
+
+## Tomcat websocket拒绝服务漏洞 CVE-2020-13935
+### 漏洞说明
+2020年7月14日，Apache官方通报Apache Tomcat 两个拒绝服务漏洞：CVE-2020-13934、CVE-2020-13935，并发布安全更新。
+Apache Tomcat WebSocket帧中的有效负载长度未正确验证，无效的有效载荷长度可能会触发无限循环，多有效负载长度无效的请求可能会导致拒绝服务。
+
+ 
+
+### 影响范围
+Apache Tomcat 10.0.0-M1~10.0.0-M6
+Apache Tomcat 9.0.0.M1~9.0.36
+Apache Tomcat 8.5.0~8.5.56
+Apache Tomcat 7.0.27~7.0.104
+ 
+
+### 验证方法
+https://github.com/RedTeamPentesting/CVE-2020-13935
+
+### 修复方案
+- 升级到Apache Tomcat 10.0.0-M7+
+- 升级到Apache Tomcat 9.0.37+
+- 升级到Apache Tomcat 8.5.57+
